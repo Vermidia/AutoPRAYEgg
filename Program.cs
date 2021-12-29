@@ -10,7 +10,7 @@ namespace AutoPRAYEgg
         {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
         static void Main(string[] args)
         {
-            Console.WriteLine("AutoPRAYEgg v1.0");
+            Console.WriteLine("AutoPRAYEgg v1.1");
             int species = -1;
             do
             {
@@ -155,12 +155,26 @@ namespace AutoPRAYEgg
             string femgly = Console.ReadLine();
             Console.WriteLine("What's the genetics file?(.gen & .gno will be added automatically)");
             string genFile = Console.ReadLine();
+            Console.WriteLine("What's the mother's genetic file?(.gen & .gno will be added automatically, leave blank if you want none)");
+            string mGenFile = Console.ReadLine();
+            Console.WriteLine("What's the father's genetic file?(.gen & .gno will be added automatically, leave blank if you want none)");
+            string fGenFile = Console.ReadLine();
             Console.WriteLine("Ok, I see. Processing options...");
             List<string> dependencies = new List<string>();
             dependencies.Add($"{malegly}.c16");
             dependencies.Add($"{femgly}.c16");
             dependencies.Add($"{genFile}.gen");
             dependencies.Add($"{genFile}.gno");
+            if(mGenFile != "" && mGenFile != genFile)
+            {
+                dependencies.Add($"{mGenFile}.gen");
+                dependencies.Add($"{mGenFile}.gno");
+            }
+            if(fGenFile != "" && fGenFile != genFile && fGenFile != mGenFile)
+            {
+                dependencies.Add($"{fGenFile}.gen");
+                dependencies.Add($"{fGenFile}.gno");
+            }
             Console.WriteLine("Added Basic Files, moving on to sprite data...");
             //for(int x = 0; x < 8; x++)
             //{
@@ -238,6 +252,14 @@ namespace AutoPRAYEgg
             Console.WriteLine("Needed Bodydata Calculated. Writing Header...");
             string FileText = $"\"en-GB\"\n\ngroup EGGS \"{fileName}\"\n\"Agent Type\" 0\n\"Script Count\" 0\n\n";
             FileText += $"\"Genetics File\" \"{genFile}*\"\n";
+            if(mGenFile != "")
+            {
+                FileText += $"\"Mother Genetics File\" \"{mGenFile}*\"\n";
+            }
+            if(fGenFile != "")
+            {
+                FileText += $"\"Father Genetics File\" \"{fGenFile}*\"\n";
+            }
             FileText += $"\"Egg Glyph File\" \"{malegly}.c16\"\n";
             FileText += $"\"Egg Glyph File 2\" \"{femgly}.c16\"\n";
             FileText += $"\"Egg Gallery male\" \"{malegly}\"\n";
